@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
 
 const NoteForm = () => {
+  const router = useRouter();
   const [newNoteTitle, setNewNoteTitle] = useState('');
   const [newNoteContent, setNewNoteContent] = useState('');
 
-  const supabase = createClientComponentClient(); // Create your Supabase client instance
+  const supabase = createClientComponentClient();
 
   const onSubmit = async (e) => {
-    debugger;
     e.preventDefault();
     try {
       const newNote = {
         title: newNoteTitle,
         content: newNoteContent,
+        created_at: new Date(),
       };
 
       // Add the new note to the "notes" table in Supabase
@@ -25,9 +27,9 @@ const NoteForm = () => {
         console.error('Error adding a new note:', error);
       } else {
         // Note added successfully
+        router.push('/notes')
         console.log('New note added:', createdNote);
-        // Trigger a callback to handle the new note, if needed
-        handleSubmit(createdNote);
+        
       }
 
       // Clear the form fields

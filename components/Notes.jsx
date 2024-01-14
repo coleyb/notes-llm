@@ -24,16 +24,20 @@ export default function Notes({ notes }) {
   }, [supabase, router]);
 
   return (
-    <div>
-      <Link href="/notes/form" className="block max-w-sm p-4 mb-4 text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <Link href="/notes/form" className=" m-4 col-span-1 md:col-span-2 lg:col-span-3 p-4 text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600">
         Add Note
-     </Link>
+      </Link>
       {notes && notes.length > 0 ? (
         notes.map((note) => (
-          <a key={note.id} href="#" className="block max-w-sm p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{note.title}</h5>
-            <p className="font-normal text-gray-700 dark:text-gray-400">{note.notes}</p>
-          </a>
+          <div key={note.id} className="m-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+            <h5 className="p-4 text-2xl font-bold text-gray-900 dark:text-white">{note.title}</h5>
+            <p className="p-4 font-normal text-gray-700 dark:text-gray-400">{note.content}</p>
+            <p className="p-4 text-sm text-gray-500 dark:text-gray-300">Created: {new Date(note.created_at).toLocaleDateString()}</p>
+            <p className={`p-4 text-sm ${note.completed ? 'text-green-600' : 'text-red-600'} dark:text-gray-300`}>{note.completed ? 'Completed' : 'Not Completed'}</p>
+            <p className="p-4 text-sm text-gray-500 dark:text-gray-300">Priority: {note.priority}</p>
+            <p className="p-4 text-sm text-gray-500 dark:text-gray-300">User ID: {note.user_id}</p>
+          </div>
         ))
       ) : (
         <p>No notes available</p>
